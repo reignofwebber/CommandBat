@@ -31,3 +31,6 @@
 *.out
 *.app
 /.vs/change/v15
+/.vs
+/change/Debug
+/change/x64/Debug

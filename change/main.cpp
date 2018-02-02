@@ -12,9 +12,8 @@ Parameters parameters;
 
 int main(int argc,char** argv)
 {
-	fstream in("xxx.sql");
-	ofstream out("xxx_out.sql");
-	ofstream bat("xxx_out.bat");
+	ifstream in("xxx.sql");
+	
 
 	string line;
 	string curnote;
@@ -191,6 +190,10 @@ int main(int argc,char** argv)
 	{
 		return -1;
 	}
+
+
+	ofstream out("xxx.sql");
+	ofstream bat("xxx.bat");
 	
 
 	Generate(out, parameters);

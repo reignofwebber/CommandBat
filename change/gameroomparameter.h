@@ -24,6 +24,7 @@
 
 
 static const std::vector<std::string> s_DefaultServerName = { "新手场","地主场","土豪场","神豪场" };
+static std::string s_DefaultAdditionalServerName = "练习房";
 
 
 struct GameRoomParameter
@@ -32,18 +33,18 @@ struct GameRoomParameter
 	std::string Note;
 	bool IsRem;
 
-	int ServerID;
+	size_t ServerID;
 	std::string ServerName;
-	int KindID;
-	int NodeID;
-	int SortID;
-	int GameID;
+	size_t KindID;
+	size_t NodeID;
+	size_t SortID;
+	size_t GameID;
 	
-	int TableCount;
-	int ServerKind;
-	int ServerType;
-	int ServerPort;
-	int ServerLevel;
+	size_t TableCount;
+	size_t ServerKind;
+	size_t ServerType;
+	size_t ServerPort;
+	size_t ServerLevel;
 
 	std::string ServerPasswd;
 	std::string DataBaseName;
@@ -260,6 +261,7 @@ public:
 		{
 			++parameters.m_CurrentAdditionalRoomSize;
 			GameRoomParameter parameter(templateParameter);
+			parameter.ServerName = s_DefaultAdditionalServerName;
 			parameter.ServerID = parameters.m_CurrentAdditionalRoomSize + ADDITIONAL_ROOM_SERVERID_START;
 			parameter.ServerPort = parameters.m_CurrentAdditionalRoomSize + ADDITIONAL_ROOM_SERVERPORT_START;
 			parameter.SortID = parameter.ServerID;
@@ -321,7 +323,7 @@ public:
 			{
 				Command::RenameServerName(4, m_params[i]);
 			}
-			else if (m_commands[i] == "-add")
+			else if (m_commands[i] == "-a")
 			{
 				std::vector<std::string> params = Tools::Split(m_params[i]);
 				if (params.size() != 2) throw - 1;
@@ -344,10 +346,26 @@ public:
 				if (params.size() != 3) throw - 1;
 				Command::RenameServerName(params[0], stoi(params[1]), params[2]);
 			}
-			else if (m_commands[i] == "-addroom")
+			else if (m_commands[i] == "-as")
 			{
-				std::string param = m_params[i];
-				Command::AddAdditionalServer(param);
+				std::vector<std::string> params = Tools::Split(m_params[i]);
+				if (params.size() == 1)
+				{
+					Command::AddAdditionalServer(params[0]);
+				}
+				else if (params.size() == 2)
+				{
+					Command::AddAdditionalServer(params[0], stoi(params[1]));
+				}
+				else
+				{
+					throw - 1;
+				}
+			}
+			else if (m_commands[i] == "-n")
+			{
+				if (m_params.size() != 1) throw - 1;
+				s_DefaultAdditionalServerName = m_params[0];
 			}
 		}
 	}
